@@ -1,0 +1,122 @@
+@startuml
+
+object User
+object StravaApi
+object KomootApi
+
+package Model {
+
+class FileAccess  {
+WriteFile
+ReadFile
+ListFiles
+}
+
+
+object TrackingData
+TrackingData : tour data
+TrackingData : speed (current, average, max)
+TrackingData : current speed in real-time
+TrackingData : distance
+TrackingData : duration (overall, active)
+
+
+
+class ConnectApis {
+ConnectApis : Komoot
+ConnectApis : Strava
+
+}
+
+object DisplayConfigurationData
+
+
+ConnectApis::Komoot --> KomootApi
+ConnectApis::Strava --> StravaApi
+
+}
+
+package View {
+
+class TrackingView {
+Update
+..
+position in map
+tracked data
+current speed in real-time
+stable in case of drops or rain
+
+}
+object ConfigurationView
+ConfigurationView : tracked data position on Display
+
+object FileView
+
+object ConnectView
+
+object Menu
+
+object StartActivity
+
+object ChallengeActivity
+
+object ExportActivity
+
+
+Menu o-- StartActivity 
+Menu o-- ChallengeActivity 
+Menu o-- ExportActivity 
+Menu o-- ConfigurationView
+
+StartActivity o-- TrackingView
+ChallengeActivity o-- FileView
+ChallengeActivity o-- ConnectView
+ChallengeActivity o-- StartActivity
+ExportActivity o-- FileView
+ExportActivity o-- ConnectView
+
+
+TrackingView *-- ConfigurationView
+}
+
+
+package Control {
+
+object BackgroundService
+
+class TrackingControl {
+UpdateData
+Start_Stop
+..
+Todo save at the end 
+Tracking current speed real-time
+}
+
+object CollectData
+CollectData : GPS
+
+class CacheTrackingData {
+Finalize
+}
+
+
+
+
+BackgroundService <|-- TrackingControl  
+TrackingControl o-- CollectData
+TrackingControl o-- CacheTrackingData
+}
+
+
+User --> Menu
+TrackingControl *-- TrackingData
+FileView o-- FileAccess
+TrackingView --> TrackingControl::Start_Stop : 1|3
+TrackingControl::UpdateData --> TrackingView::Update : 2
+ConfigurationView *-- DisplayConfigurationData
+TrackingControl::Start_Stop --> CacheTrackingData::Finalize : onStop
+CacheTrackingData::Finalize --> FileAccess::WriteFile
+ConnectView o-- ConnectApis
+
+
+@enduml
