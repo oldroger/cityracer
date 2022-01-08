@@ -1,4 +1,4 @@
-class CrPosition {
+class CityracerPosition {
   final double? _longitude;
   final double? _latitude;
   final double? _altitude;
@@ -9,7 +9,7 @@ class CrPosition {
   final String? _dateTimeString;
   final bool? _valid;
 
-  const CrPosition(
+  const CityracerPosition(
       this._longitude,
       this._latitude,
       this._altitude,
@@ -18,17 +18,6 @@ class CrPosition {
       this._accuracy,
       this._speedAccuracy,
       this._dateTimeString) : _valid = true;
-
-  const CrPosition.invalid() :
-    _longitude = -1,
-    _latitude = -1,
-    _altitude = -1,
-    _speed = -1,
-    _heading = -1,
-    _accuracy = -1,
-    _speedAccuracy = -1,
-    _dateTimeString = "",
-    _valid = false;
 
   double? get longitude => _longitude;
   double? get latitude => _latitude;
@@ -39,6 +28,5 @@ class CrPosition {
   double? get speedAccuracy => _speedAccuracy;
   String? get timeIso8601 => _dateTimeString;
   bool? get valid => _valid;
-
 }
 
