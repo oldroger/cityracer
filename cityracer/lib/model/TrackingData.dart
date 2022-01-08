@@ -1,32 +1,32 @@
-class CityracerPosition {
-  final double? _longitude;
-  final double? _latitude;
-  final double? _altitude;
-  final double? _speed;
-  final double? _heading;
-  final double? _accuracy;
-  final double? _speedAccuracy;
-  final String? _dateTimeString;
-  final bool? _valid;
+class TrackingData{
+  final double longitude;
+  final double latitude;
+  final double altitude;
+  final double speed;
+  final double heading;
+  final double accuracy;
+  final double speedAccuracy;
+  final String dateTimeString;
 
-  const CityracerPosition(
-      this._longitude,
-      this._latitude,
-      this._altitude,
-      this._speed,
-      this._heading,
-      this._accuracy,
-      this._speedAccuracy,
-      this._dateTimeString) : _valid = true;
+  const TrackingData({
+    required this.longitude,
+    required this.latitude,
+    required this.altitude,
+    required this.speed,
+    required this.heading,
+    required this.accuracy,
+    required this.speedAccuracy,
+    required this.dateTimeString
+  });
 
-  double? get longitude => _longitude;
-  double? get latitude => _latitude;
-  double? get altitude => _altitude;
-  double? get speed => _speed;
-  double? get heading => _heading;
-  double? get accuracy => _accuracy;
-  double? get speedAccuracy => _speedAccuracy;
-  String? get timeIso8601 => _dateTimeString;
-  bool? get valid => _valid;
+  const TrackingData.defaultValues() :
+        this.longitude = 0.0,
+        this.latitude = 0.0,
+        this.altitude = 0.0,
+        this.speed = 0.0,
+        this.heading = 0.0,
+        this.accuracy = 0.0,
+        this.speedAccuracy = 0.0,
+        this.dateTimeString = "-";
 }
 

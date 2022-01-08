@@ -1,24 +1,56 @@
 import 'dart:async';
 import 'package:location/location.dart';
 import 'package:cityracer/model/TrackingData.dart';
+import 'package:cityracer/model/LocationConfigurationData.dart';
 
-class LocationService {
-  TrackingData? _currentLocation;
-
-  var location = Location();
-  StreamController<TrackingData> _locationController =
-  StreamController<TrackingData>();
-
+//todo background mode
+class TrackingControl {
+  var _location = Location();
+  StreamController<TrackingData> _locationController = StreamController<TrackingData>();
+  
   Stream<TrackingData> get locationStream => _locationController.stream;
+  StreamSubscription<LocationData>? _locationSubscription;
 
-  LocationService() {
+  TrackingControl() {
+
+  }
+
+  /*private val requestPermissionLauncher = registerForActivityResults(ActivityResultContracts.RequestPermissions()){
+    isGranted: Boolean ->
+    if (isGranted){
+      Log.i("Permission", "Granted");
+    } else {
+      Log.i("Permission", "Denied");
+    }
+  }
+
+  private fun requestPermission(){
+    when{
+      COntextCompat.checkSelfPermissions()
+    }
+
+  }*/
+
+
+  //provider better suited instead of callback?
+  void startTracking(Function updateView){
     // Request permission to use location
-    location.requestPermission().then((permissionStatus) {
+    _location.requestPermission().then((permissionStatus) {
       if (permissionStatus == PermissionStatus.granted) {
+
+        _location.changeSettings(
+            accuracy: LocationConfigurationData.locationAccuracy,
+            interval: LocationConfigurationData.interval,
+            distanceFilter: LocationConfigurationData.distanceFilter
+        );
+        //special permission required
+        //_location.enableBackgroundMode(enable: true);
         // If granted listen to the onLocationChanged stream and emit over our controller
         //todo: check for null don't assume it
-        location.onLocationChanged.listen((locationData) {
-          _locationController.add(TrackingData(
+        //todo: stream better?
+        _locationSubscription = _location.onLocationChanged.listen((locationData) {
+
+          TrackingData trackingData = TrackingData(
             latitude: locationData.latitude!,
             longitude: locationData.longitude!,
             accuracy: locationData.accuracy!,
@@ -27,9 +59,16 @@ class LocationService {
             speedAccuracy: locationData.speedAccuracy!,
             heading: locationData.heading!,
             dateTimeString: DateTime.fromMillisecondsSinceEpoch(locationData.time!.toInt()).toIso8601String(),
-          ));
+          ) ;
+          
+          updateView(trackingData);
         });
       }
     });
+  }
+
+  void stopTracking(){
+    _location.enableBackgroundMode(enable: false);
+    _locationSubscription?.cancel();
   }
 }
