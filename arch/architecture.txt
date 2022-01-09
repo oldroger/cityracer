@@ -6,105 +6,108 @@ object KomootApi
 
 package Model {
 
-class FileAccess  {
-WriteFile
-ReadFile
-ListFiles
-}
+	class FileAccess  {
+		WriteFile
+		ReadFile
+		ListFiles
+	}
 
 
-object TrackingData
-TrackingData : tour data
-TrackingData : speed (current, average, max)
-TrackingData : current speed in real-time
-TrackingData : distance
-TrackingData : duration (overall, active)
+	object TrackingData
+		TrackingData : tour data
+		TrackingData : speed (current, average, max)
+		TrackingData : current speed in real-time
+		TrackingData : distance
+		TrackingData : duration (overall, active)
+
+	class ConnectApis {
+		ConnectApis : Komoot
+		ConnectApis : Strava
+
+	}
+
+	object DisplayConfigurationData
 
 
-
-class ConnectApis {
-ConnectApis : Komoot
-ConnectApis : Strava
-
-}
-
-object DisplayConfigurationData
-
-
-ConnectApis::Komoot --> KomootApi
-ConnectApis::Strava --> StravaApi
+	ConnectApis::Komoot --> KomootApi
+	ConnectApis::Strava --> StravaApi
 
 }
 
 package View {
 
-class TrackingView {
-Update
-..
-position in map
-tracked data
-current speed in real-time
-stable in case of drops or rain
+	class TrackingView {
+		Update
+		..
+		position in map
+		tracked data
+		current speed in real-time
+		stable in case of drops or rain
 
-}
-object ConfigurationView
-ConfigurationView : tracked data position on Display
+	}
+	
+	object ConfigurationView
+		ConfigurationView : tracked data position on Display
 
-object FileView
+	object FileView
 
-object ConnectView
+	object ConnectView
 
-object Menu
+	object Menu
 
-object StartActivity
+	object StartActivity
 
-object ChallengeActivity
+	object ChallengeActivity
 
-object ExportActivity
-
-
-Menu o-- StartActivity 
-Menu o-- ChallengeActivity 
-Menu o-- ExportActivity 
-Menu o-- ConfigurationView
-
-StartActivity o-- TrackingView
-ChallengeActivity o-- FileView
-ChallengeActivity o-- ConnectView
-ChallengeActivity o-- StartActivity
-ExportActivity o-- FileView
-ExportActivity o-- ConnectView
+	object ExportActivity
 
 
-TrackingView *-- ConfigurationView
+	Menu o-- StartActivity 
+	Menu o-- ChallengeActivity 
+	Menu o-- ExportActivity 
+	Menu o-- ConfigurationView
+
+	StartActivity o-- TrackingView
+	ChallengeActivity o-- FileView
+	ChallengeActivity o-- ConnectView
+	ChallengeActivity o-- StartActivity
+	ExportActivity o-- FileView
+	ExportActivity o-- ConnectView
+
+
+	TrackingView *-- ConfigurationView
 }
 
 
 package Control {
 
-object BackgroundService
+	object BackgroundService
 
-class TrackingControl {
-UpdateData
-Start_Stop
-..
-Todo save at the end 
-Tracking current speed real-time
-}
+	class TrackingControl {
+		UpdateData
+		Start_Stop
+		..
+		Todo save at the end 
+		Tracking current speed real-time
+	}
 
-object CollectData
-CollectData : GPS
+	object CollectData
+		CollectData : GPS
 
-class CacheTrackingData {
-Finalize
-}
+	class CacheTrackingData {
+		Finalize
+	}
+	
+	class Clock{
+		Configure
+		Update
+	}
 
 
-
-
-BackgroundService <|-- TrackingControl  
-TrackingControl o-- CollectData
-TrackingControl o-- CacheTrackingData
+	BackgroundService <|-- TrackingControl  
+	TrackingControl o-- CollectData
+	TrackingControl o-- CacheTrackingData
+	TrackingControl o-- Clock
 }
 
 
@@ -116,6 +119,7 @@ TrackingControl::UpdateData --> TrackingView::Update : 2
 ConfigurationView *-- DisplayConfigurationData
 TrackingControl::Start_Stop --> CacheTrackingData::Finalize : onStop
 CacheTrackingData::Finalize --> FileAccess::WriteFile
+
 ConnectView o-- ConnectApis
 
 
