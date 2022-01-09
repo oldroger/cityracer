@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:location/location.dart';
 import 'package:cityracer/model/TrackingData.dart';
-import 'package:cityracer/model/LocationConfigurationData.dart';
+import 'package:cityracer/model/TrackingConfigurationData.dart';
 
 //todo background mode
 class TrackingControl {
@@ -26,7 +26,7 @@ class TrackingControl {
 
   private fun requestPermission(){
     when{
-      COntextCompat.checkSelfPermissions()
+      ContextCompat.checkSelfPermissions()
     }
 
   }*/
@@ -39,9 +39,9 @@ class TrackingControl {
       if (permissionStatus == PermissionStatus.granted) {
 
         _location.changeSettings(
-            accuracy: LocationConfigurationData.locationAccuracy,
-            interval: LocationConfigurationData.interval,
-            distanceFilter: LocationConfigurationData.distanceFilter
+            accuracy: TrackingConfigurationData.locationAccuracy,
+            interval: TrackingConfigurationData.interval,
+            distanceFilter: TrackingConfigurationData.distanceFilter
         );
         //special permission required
         //_location.enableBackgroundMode(enable: true);

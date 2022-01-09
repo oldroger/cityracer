@@ -7,24 +7,50 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:cityracer/model/TrackingData.dart';
 
 import 'package:cityracer/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('Check if update mechanism works', (WidgetTester tester) async {
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    //todo: howto pumpWidget MenuView?
+    await tester.pumpWidget(CityRacer());
+    final MenuViewState myWidgetState = tester.state<MenuViewState>(find.byType(MenuView));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.text(
+        'Lat: 0.0\n' +
+        'Long: 0.0\n' +
+        'Alt: 0.0\n' +
+        'Speed: 0.0\n' +
+        'Head: 0.0\n' +
+        'Accu: 0.0\n' +
+        'SpAc: 0.0\n' +
+        'Time: -'), findsOneWidget);
+
+    TrackingData trackingData = TrackingData(
+        latitude: 1.0,
+        longitude: 2.0,
+        altitude: 3.0,
+        speed: 4.0,
+        heading: 5.0,
+        accuracy: 6.0,
+        speedAccuracy: 7.0,
+        dateTimeString: "Datum"
+    );
+    myWidgetState.updateValues(trackingData);
+
+    //await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text(
+        'Lat: 1.0\n' +
+        'Long: 2.0\n' +
+        'Alt: 3.0\n' +
+        'Speed: 4.0\n' +
+        'Head: 5.0\n' +
+        'Accu: 6.0\n' +
+        'SpAc: 7.0\n' +
+        'Time: Datum'), findsOneWidget);
   });
 }

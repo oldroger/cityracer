@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'package:cityracer/control/TrackingControl.dart';
@@ -14,22 +13,13 @@ class CityRacer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Wakelock.enable();
-    /*return StreamProvider<TrackingData>(
-        initialData: TrackingData.defaultValues(),
-        create: (context) => TrackingControl().locationStream,
-        child: MaterialApp(
-          title: 'Cityracer',
-          theme: ThemeData(
-            primarySwatch: DisplayConfigurationData.primaryColor,
-          ),
-          home: const MenuView(title: 'City Racer'),
-        ));*/
+
     return MaterialApp(
-            title: 'Cityracer',
+            title: 'City Racer',
             theme: ThemeData(
               primarySwatch: DisplayConfigurationData.primaryColor,
             ),
-          home: const MenuView(title: 'City Racer')
+          home: const MenuView(title: 'City Racer Menu')
     );
   }
 }
@@ -40,16 +30,16 @@ class MenuView extends StatefulWidget {
   final String title;
 
   @override
-  State<MenuView> createState() => _MenuView();
+  State<MenuView> createState() => MenuViewState();
 }
 
-class _MenuView extends State<MenuView> {
+@visibleForTesting
+class MenuViewState extends State<MenuView> {
   TrackingData _trackingData = TrackingData.defaultValues();
   TrackingControl _trackingControl = TrackingControl();
 
-  _MenuView(){
+  MenuViewState(){
     _trackingControl.startTracking(updateValues);
-
   }
 
   void updateValues(TrackingData trackingData) {
@@ -65,14 +55,14 @@ class _MenuView extends State<MenuView> {
     return Scaffold(
         body: Center(
       child: Text(
-          'Lat${_trackingData.latitude} \n' +
+          'Lat: ${_trackingData.latitude}\n' +
           'Long: ${_trackingData.longitude}\n' +
-          'Alt${_trackingData.altitude}\n' +
+          'Alt: ${_trackingData.altitude}\n' +
           'Speed: ${_trackingData.speed}\n' +
-          'Head${_trackingData.heading}\n' +
+          'Head: ${_trackingData.heading}\n' +
           'Accu: ${_trackingData.accuracy}\n' +
-          'SpAc${_trackingData.speedAccuracy}\n' +
-          'Time: ${_trackingData.dateTimeString}\n'
+          'SpAc: ${_trackingData.speedAccuracy}\n' +
+          'Time: ${_trackingData.dateTimeString}'
         ),
     ));
   }
