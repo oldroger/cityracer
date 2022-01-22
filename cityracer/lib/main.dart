@@ -35,14 +35,14 @@ class MenuView extends StatefulWidget {
 
 @visibleForTesting
 class MenuViewState extends State<MenuView> {
-  TrackingData _trackingData = TrackingData.defaultValues();
+  TrackingLocationData _trackingData = TrackingLocationData.defaultValues();
   TrackingControl _trackingControl = TrackingControl();
 
   MenuViewState(){
     _trackingControl.startTracking(updateValues);
   }
 
-  void updateValues(TrackingData trackingData) {
+  void updateValues(TrackingLocationData trackingData) {
     setState(() {
       _trackingData = trackingData;
     });

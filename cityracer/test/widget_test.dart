@@ -5,7 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cityracer/model/TrackingData.dart';
 
@@ -28,7 +27,7 @@ void main() {
         'SpAc: 0.0\n' +
         'Time: -'), findsOneWidget);
 
-    TrackingData trackingData = TrackingData(
+    TrackingLocationData trackingData = TrackingLocationData(
         latitude: 1.0,
         longitude: 2.0,
         altitude: 3.0,
