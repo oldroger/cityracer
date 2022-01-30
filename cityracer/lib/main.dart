@@ -6,7 +6,17 @@ import 'package:cityracer/model/DisplayConfigurationData.dart';
 import 'package:cityracer/model/TrackingData.dart';
 
 void main() {
-  runApp(CityRacer());
+  //todo use flutter errorWidget
+  try {
+    runApp(CityRacer());
+  } on Exception catch (e) {
+    //General exceptions
+    print('Args - should\'nt happen: $e');
+  } catch (e) {
+    // all problems
+    print('Damn - sorry: $e');
+  }
+
 }
 
 class CityRacer extends StatelessWidget {
@@ -39,7 +49,6 @@ class MenuViewState extends State<MenuView> {
   TrackingControl _trackingControl = TrackingControl();
 
   MenuViewState(){
-    _trackingControl.startTracking(updateValues);
   }
 
   void updateValues(TrackingLocationData trackingData) {
@@ -48,22 +57,50 @@ class MenuViewState extends State<MenuView> {
     });
   }
 
+  void onStart() {
+    _trackingControl.startTracking(updateValues);
+
+  }
+  void onStop() {
+    _trackingControl.stopTracking();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style =
+    ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
     //var userLocation = Provider.of<TrackingData>(context);
     return Scaffold(
         body: Center(
-      child: Text(
-          'Lat: ${_trackingData.latitude}\n' +
-          'Long: ${_trackingData.longitude}\n' +
-          'Alt: ${_trackingData.altitude}\n' +
-          'Speed: ${_trackingData.speed}\n' +
-          'Head: ${_trackingData.heading}\n' +
-          'Accu: ${_trackingData.accuracy}\n' +
-          'SpAc: ${_trackingData.speedAccuracy}\n' +
-          'Time: ${_trackingData.dateTimeString}'
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                  'Lat: ${_trackingData.latitude}\n' +
+                      'Long: ${_trackingData.longitude}\n' +
+                      'Alt: ${_trackingData.altitude}\n' +
+                      'Speed: ${_trackingData.speed}\n' +
+                      'Head: ${_trackingData.heading}\n' +
+                      'Accu: ${_trackingData.accuracy}\n' +
+                      'SpAc: ${_trackingData.speedAccuracy}\n' +
+                      'Time: ${_trackingData.dateTimeString}'
+              ),
+              ElevatedButton(
+                style: style,
+                onPressed: onStart,
+                child: const Text('Start'),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                style: style,
+                onPressed: onStop,
+                child: const Text('Stop'),
+              ),
+            ],
+          ),
         ),
-    ));
+
+    );
   }
 }

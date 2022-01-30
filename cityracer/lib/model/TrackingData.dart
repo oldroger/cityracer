@@ -2,14 +2,18 @@ import 'package:hive/hive.dart';
 
 part 'TrackingData.g.dart';
 
+//todo const enum imstead
+const int sessionId=0;
+const int trackingDataLocationId=1;
 
-@HiveType(typeId: 0)
+
+@HiveType(typeId: sessionId)
 class Session {
   @HiveField(0)
   List locationList = <TrackingLocationData>[];
 }
 
-@HiveType(typeId: 1)
+@HiveType(typeId: trackingDataLocationId)
 class TrackingLocationData{
   @HiveField(0)
   final double longitude;

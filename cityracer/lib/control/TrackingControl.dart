@@ -25,10 +25,14 @@ class TrackingControl {
     //replace with app dir after prototyping - ext. storage not supported on ios
     final directory = await getExternalStorageDirectory();
     print(directory!.path);
-    //dangerous
-    Hive.init(directory!.path);
-    Hive.registerAdapter(SessionAdapter());
-    Hive.registerAdapter(TrackingLocationDataAdapter());
+    //todo: throw exception if path == null?
+    Hive.init(directory.path);
+    if(!Hive.isAdapterRegistered(sessionId)){
+      Hive.registerAdapter(SessionAdapter());
+    }//no need to do anything
+    if(!Hive.isAdapterRegistered(trackingDataLocationId)) {
+      Hive.registerAdapter(TrackingLocationDataAdapter());
+    }//no need to do anything
     return await Hive.openBox(DatabaseConfigurationData().sessionBoxName);
   }
 
@@ -70,12 +74,11 @@ class TrackingControl {
         }
       });
     });
-
   }
 
-  void stopTracking() async{
-    var box = await Hive.openBox('sessionBox');
-    await box.close();
+  void stopTracking() {
+    var box = Hive.box(DatabaseConfigurationData().sessionBoxName);
+    if (box.isOpen){ box.close();}
     _location.enableBackgroundMode(enable: false);
     _locationSubscription?.cancel();
   }
