@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
-import 'package:cityracer/control/TrackingControl.dart';
+import 'package:cityracer/control/ControlMain.dart';
 import 'package:cityracer/model/DisplayConfigurationData.dart';
 import 'package:cityracer/model/TrackingData.dart';
 
@@ -46,7 +46,7 @@ class MenuView extends StatefulWidget {
 @visibleForTesting
 class MenuViewState extends State<MenuView> {
   TrackingLocationData _trackingData = TrackingLocationData.defaultValues();
-  TrackingControl _trackingControl = TrackingControl();
+  ControlMain _trackingControl = ControlMain();
 
   MenuViewState(){
   }

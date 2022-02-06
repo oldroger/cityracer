@@ -1,10 +1,10 @@
 import 'package:hive/hive.dart';
-
 part 'TrackingData.g.dart';
 
 //todo const enum imstead
-const int sessionId=0;
-const int trackingDataLocationId=1;
+const int sessionId = 0;
+const int trackingDataLocationId = 1;
+
 
 
 @HiveType(typeId: sessionId)
@@ -14,7 +14,7 @@ class Session {
 }
 
 @HiveType(typeId: trackingDataLocationId)
-class TrackingLocationData{
+class TrackingLocationData {
   @HiveField(0)
   final double longitude;
   @HiveField(1)
@@ -32,19 +32,18 @@ class TrackingLocationData{
   @HiveField(7)
   final String dateTimeString;
 
-  const TrackingLocationData({
-    required this.longitude,
-    required this.latitude,
-    required this.altitude,
-    required this.speed,
-    required this.heading,
-    required this.accuracy,
-    required this.speedAccuracy,
-    required this.dateTimeString
-  });
+  const TrackingLocationData(
+      {required this.longitude,
+      required this.latitude,
+      required this.altitude,
+      required this.speed,
+      required this.heading,
+      required this.accuracy,
+      required this.speedAccuracy,
+      required this.dateTimeString});
 
-  const TrackingLocationData.defaultValues() :
-        this.longitude = 0.0,
+  const TrackingLocationData.defaultValues()
+      : this.longitude = 0.0,
         this.latitude = 0.0,
         this.altitude = 0.0,
         this.speed = 0.0,
@@ -53,6 +52,3 @@ class TrackingLocationData{
         this.speedAccuracy = 0.0,
         this.dateTimeString = "-";
 }
-
-
-
